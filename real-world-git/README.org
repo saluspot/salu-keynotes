@@ -1,0 +1,98 @@
+* Real World Git
+
+Git is not as simple as ~add~, ~commit~ and ~push~. In real projects where you are
+collaborating with people, you see your self in more complicated situations.
+
+Hotfixing, people changing the historial, recovering lost branches, cherry picking
+code snippets, pretending you did the tests before the functionality ...
+
+
+** Scenarios
+
+*** Something stinks here. Bisect it!
+*** Disaster on the way. Commit what is needed (add --patch)
+
+Sometimes you are focused in a task and making your changes clean and neat but
+suddenly you see this piece of code that you want to refactor or has nothing to
+do with what you are doing. Anyways you modify those lines and is not the time
+to commit them.
+
+Well lets add or discard hunks.
+
+A Hunk is a piece of code
+
+*** I screwed up everything. What have I done? Help me Superman! (reflog)
+
+Superman is not comming to help but you have ~reflog~ to help you out.
+
+*** I will come later (stash)
+
+
+** Misterious git
+
+- git gc http://www.kernel.org/pub/software/scm/git/docs/git-gc.html
+
+- git fsck http://www.kernel.org/pub/software/scm/git/docs/git-fsck.html
+
+- git prune http://www.kernel.org/pub/software/scm/git/docs/git-prune.html
+
+Removes objects that are no longer pointed to by any object in any
+reachable branch.
+
+- git archive
+
+- git daemon
+
+
+** Ninja tools
+
+There is no magic, remember there is nothing you can't do with git and few clicks.
+
+*** Hub
+[[https://hub.github.com][Hub is a command-line wrapper for git that makes you better at GitHub]]
+
+Few things I like about it
+**** Fetching and pushing to several remotes
+
+hub fetch production forked
+hub push production forked
+
+**** Cloning easily
+
+hub clone <username> <repo-name>
+
+**** Opening wiki
+
+hub browse saluspot/saluspot wiki
+
+*** Git extras
+[[https://github.com/tj/git-extras][Git extras repo]]
+
+Few examples of what you can do:
+
+~git ignore .DS_Store~ Add file to gitignore file
+~git summary~  Shows the ammount of commits per committer
+~git effort~ Displays "effort" statistics, currently just the number of commits per file,
+~git pr 226 origin~ Show the pull request 226 in the remote origin
+~git release 0.9~ Tag and push
+~git ignore-io -a emacs~ Appends to .gitignore the file types to ignore
+according to https://www.gitignore.io/api/emacs
+
+[[https://github.com/tj/git-extras/blob/master/Commands.md][All the commands]]
+
+*** Magit
+
+Yes, looks like the panacea but is it?
+Let me show you some killer features
+
+
+** References
+
+https://www.toptal.com/git/interview-questions
+http://robey.lag.net/2008/07/13/git-for-the-real-world.html
+http://nuclearsquid.com/writings/git-add/
+https://www.masteringemacs.org/article/introduction-magit-emacs-mode-git
+https://www.emacswiki.org/emacs/Magit
+https://github.com/pnavarrc/howto-git-bisect
+http://www.ndpsoftware.com/git-cheatsheet.html#loc=stash
+https://www.youtube.com/watch?v=GLLUNDrPHJQ
