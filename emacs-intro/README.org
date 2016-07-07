@@ -1,0 +1,380 @@
+#+TITLE: Descubriendo Emacs
+#+AUTHOR: Miguel Garcia Rodriguez
+#+DATE: <2016-07-06 Wed>
+#+EMAIL: miguel.garciarod@gmail.com
+
+* DESCUBRIENDO EMACS
+
+  Escape Meta Alt Control Shift
+
+  file:img/emacs-logo.png
+
+** Breve historia de muchos parentesis
+
+   1975 Richard Stallman & Guy Steele inspirados por: TECMAC y TMACS, un par de editores TECO-macro.
+   Fred Wright creo el editor de textos "E" tenía un comportamiento intuitivo WYSIWYG.
+   R.S pronto acumuló una colección de macros, cuyos nombres terminaban en "MAC" o "MACS" .
+   El sistema resultante fue llamado EMACS, es decir, "Editing MACroS" o "E con MACroS",
+
+   El primer editor similar a Emacs que funcionó sobre Unix fue el Gosling Emacs,
+   escrito en 1981 por James Gosling (que más tarde inventó el lenguaje de
+   programación Java). Fue escrito en el lenguaje de programación C y utilizaba un
+   lenguaje de extensión conocido como Mocklisp, con sintaxis similar a la del
+   lenguaje Lisp.  En 1984 era software propietario.
+
+   En 1984, Stallman empezó a trabajar en GNU Emacs, una alternativa de software
+   libre al Gosling Emacs.  GNU Emacs se convirtió en el primer programa publicado
+   por el emergente Proyecto GNU.  Emacs fue la 15.34, que apareció en 1985.
+
+   Actualmente existe la version (emacs-version) 24.5
+
+*** Instalamos Emacs
+
+    [[https://www.gnu.org/software/emacs/][Descargar]] Funciona hasta en papel:
+    GNU, GNU/Linux, FreeBSD, NetBSD, OpenBSD, OS X, MS Windows and Solaris.
+
+*** Que es Emacs?
+
+    Emacs no utiliza un lenguaje de extensión junto a una API que puedes usar para
+    escribir extensiones, es más correcto pensar en Emacs como un intérprete sobre el
+    cual se ha construido un framework para editar texto pero nada le impide ampliar este
+    framework para soportar otras tareas como interactuar con una base de datos o con un
+    terminal o con un servidor de mensajería.
+
+    Analizando con [[http://www.dwheeler.com/sloccount/][sloccount]] el código fuente de Emacs:
+
+    #+BEGIN_SRC sh
+      Totals grouped by language (dominant language first):
+      lisp:       1068797 (77.75%)
+      ansic:       280312 (20.39%)
+      objc:         15002 (1.09%)
+      sh:            6263 (0.46%)
+      perl:          1277 (0.09%)
+      pascal:        1010 (0.07%)
+      cs:             770 (0.06%)
+      cpp:            528 (0.04%)
+      awk:            477 (0.03%)
+      ruby:           257 (0.02%)
+      java:            27 (0.00%)
+    #+END_SRC
+
+    De hecho, generar el ejecutable de Emacs requiere dos pasos:
+
+    1. Compilar el código C que genera un ejecutable llamado temacs y que es puramente un
+    intérprete de EmacsLisp + rutinas de I/O.
+    2. El ejecutable temacs se ejecuta para cargar la librería estándard escrita en EmacsLisp y
+    volcar todo a un ejecutable con esas librerías pre-cargadas por razones de eficiencia.
+
+    Al último ejecutable es a lo que conocemos como Emacs.
+
+*** Que significa que se trate de un interprete?
+
+    Entre otras cosas, que absolutamente todo lo que haces en el programa, en última
+    instancia, invoca a una función escrita en EmacsLisp (la mayoría) o en C (por
+    razones de eficiencia).
+    Podemos programar, o re-programar toda su funcionalidad a nuestra conveniencia.
+
+    Acaso no somos programadores?
+    [[https://youtu.be/jNa3axo40qM?t=120][Emacs Rocks multiple cursors]]
+
+    Emacs es autodocumentado y
+
+    #+BEGIN_SRC elisp
+    C-h i(info) t(tutorial) m(mode) f(function) k(keybind) ?(all)
+    #+END_SRC
+
+*** Razones para usarlo
+
+    * Existe desde hace mas de 30 años y sigue mantenido y creciendo día a día.
+    * Documentado, customizable y respaldado por una gran comunidad
+
+Pero... quien lo usa?
+
+browse-url-firefox http://wenshanren.org/?p=418
+Yukihiro's Talk: http://www.slideshare.net/yukihiro_matz/how-emacs-changed-my-life
+
+** Terminologia
+*** modo
+Citando a [[http://es.wikipedia.org/wiki/Emacs#Modos_de_edici.C3.B3n][Wikipedia]]:
+
+#+BEGIN_QUOTE
+Emacs adapta su comportamiento al tipo de texto que está editando
+mediante modos de edición llamados "modos mayores" ("major
+modes"). Los modos mayores se definen para textos de texto ordinario,
+código fuente para diversos lenguajes de programación, documentos
+HTML, TeX y LaTeX y muchos otros tipos de texto. Cada modo mayor
+modifica ciertas variables en Lisp para que Emacs se comporte de forma
+más conveniente para ese tipo concreto de texto. Los modos mayores
+también ofrecen comandos especiales de edición. Por ejemplo, los modos
+mayores para lenguajes de programación definen habitualmente comandos
+para saltar al principio o al final de una función.
+
+El comportamiento de Emacs puede ser más personalizado aún utilizando
+los "modos menores" ("minor modes"). Mientras que sólo se puede
+asociar un modo mayor con un buffer a la vez, se puede tener activos
+varios modos menores. Por ejemplo, el modo mayor para el lenguaje de
+programación C define un modo menor diferente para cada uno de los
+estilos de indentación más populares.
+#+END_QUOTE
+
+Es decir, un modo mayor viene siendo lo que el [[http://vimdoc.sourceforge.net/htmldoc/filetype.html][filetype]] es para VIM y
+los modos menores son como si fueran plugins que puedes auto-activar
+para ciertos filetypes o de forma globals.
+
+*** modeline
+El modeline o línea de modos es la línea que aparece abajo del todo y
+que se le llama de modos porque entre otras cosa te muestra los modos
+que están activos.
+
+[[file:img/emacs-modeline.png]]
+
+*** buffer
+Es lo que contiene el texto que estás editando. Cada vez que abres un
+fichero se crea un buffer con el mismo nombre que ese fichero y que
+contiene el texto del mismo.
+
+- El atajo ~C-x C-f~ que invoca al comando ~find-file~ se utiliza para
+  cargar un fichero en un buffer.
+- El atajo ~C-x b~ que invoca al comando ~switch-to-buffer~ se utiliza
+  para moverte entre varios buffers.
+- El atajo ~C-x C-s~ que invoca al comando ~save-buffer~ se utiliza
+  para volcar el contenido del buffer a un fichero.
+- El comando ~rename-buffer~ se utiliza para cambiar el nombre del buffer.
+
+Los buffers pueden o no estar asociados a ficheros.
+Por convención los buffers que no están asociados a ficheros se
+escriben entre ~*~, por ejemplo, el buffer ~*scratch*~ es un buffer
+que no está asociado a ningún fichero.
+El nombre de un buffer y el fichero al que está asociado son cosas independientes,
+puedes renombrar un buffer que está asociado a un fichero y guardar ~C-x C-s~ y seguirá
+guardándose en el mismo fichero.
+
+*** window
+Un window en Emacs es la región que encierra un buffer y que tiene un modeline.
+La siguiente imagen muestra 4 ventanas:
+
+[[file:img/emacs-windows.png]]
+
+*** frame
+Un frame no es más que una ventana GUI.
+
+[[file:img/frame.png]]
+
+*** meta
+Meta es probablemente lo mismo que tu tecla Alt y se abrevia ~M~ en
+los comandos, por ejemplo: el comando ~M-x~ significa ~<Alt> - x~.
+
+*** control
+Es tu tecla Ctrl y se abrevia ~C~ en los comandos, por ejemplo: el
+comando ~C-a~ significa ~<Ctrl> - a~.
+
+*** space
+Es tu tecla /espacio/ y se abrevia ~SPC~ en los comandos, por ejemplo: el
+comando ~C-SPC~ significa ~<Ctrl> - <Space>~.
+
+*** comando
+Un comando es una función del editor que se puede invocar a través de
+un /prompt/ que aparece al presionar ~M-x~.
+Es fácil distinguir estas funciones si estás mirando código EmacsLisp
+porque tienen la lista =(interactive)= en su definición.
+
+Por ejemplo, la función =back-to-indentation= es un comando.
+Su definición original es (fíjate en la línea con =(interactive)=):
+
+#+BEGIN_SRC elisp
+  (defun back-to-indentation ()
+    "Move point to the first non-whitespace character on this line."
+    (interactive "^")
+    (beginning-of-line 1)
+    (skip-syntax-forward " " (line-end-position))
+    ;; Move back over chars that have whitespace syntax but have the p flag.
+    (backward-prefix-chars))
+#+END_SRC
+
+Y por el hecho de ser un comando podemos invocarla directamente a
+través del prompt sin necesidad de un atajo, es más, al final eres
+tú el que decide qué comandos quieres tener mapeados a qué atajos de
+teclado /(solo los comandos se pueden mapear a atajos)/:
+
+1. Presiona ~M-x~
+2. Escribe ~back-to~ y da al tabulador para que autocomplete
+3. Intro
+
+El resultado es el mismo que invocar el comando con un atajo.
+
+Probemos con otro  ejemplo, hemos dicho que Emacs es  un intérprete de
+EmacsLisp no?  Pues eso significa que tendríamos que poder ejecutar el
+código  EmacsLisp   que  quisiéramos   no?   Pues  bien,   el  comando
+~eval-expression~ que  por defecto  está mapeado  a ~M-:~  nos permite
+precisamente esto:
+
+1. Presiona ~M-x~
+2. Escribe ~eval-expression~
+3. Intro
+4. Escribe: =(message "Estamos en el año: %s" (format-time-string "%Y"))=
+
+El resultado deberá aparecer debajo de la línea de modos.
+
+*** point
+El punto o /point/ no es más que la posición del cursor dentro del buffer.
+
+*** mark y mark-ring
+Emacs mantiene una estructura de datos que se llama /mark-ring/ que es
+una lista circular.  La marca o /mark/ es una posición del buffer que
+insertas al principio del /mark-ring/ (la lista circular).
+
+- ~C-SPC~ que invoca al comando =set-mark-command= inserta la
+  posición actual del cursor y si mueves el cursor sobresalta el texto.
+- ~C-SPC C-SPC~ que invoca al comando =set-mark-command= inserta la
+  posición actual del cursor sin sobresaltar el texto.
+- ~C-u C-SPC~ que invoca al mismo comando =set-mark-command= pero
+  mueve el cursor a la posición guardada al principio del /mark-ring/
+  y mueve esa posición al final del /mark-ring/ (rota la lista).
+
+Es decir, que puedes ir dejando rastros con ~C-SPC~ por todo el buffer
+y luego volver sobre tus pasos con ~C-u C-SPC~ volviendo a empezar
+cuando llegues al final del mark-ring.  El mark-ring por defecto tiene
+un máximo de tamaño de 16 marcas.
+
+*** region
+A la región del buffer entre el punto y la marca se le llama region y
+muchos comandos actúan sobre ella. Por ejemplo:
+
+- =comment-region= que comenta la region.
+- =kill-region= mapeado a ~C-w~ por defecto que corta el texto en la region.
+- =kill-ring-save= mapeado a ~M-w~ por defecto que copia el texto en la region.
+
+** Ampliando Emacs
+*** Personalizando el editor
+
+file:img/emacsen-pro.png
+
+Emacs evalua y carga el fichero emacs.d o emacs.d/init.el en tu ~ al iniciarse.
+
+# Algunas cosas que no me gustan del editor por defecto
+(setq make-backup-files nil)
+(global-auto-revert-mode t)
+(setq auto-save-default -1)
+(setq show-paren-style 'mixed)
+
+# Creando macro functions
+(global-set-key (kbd "C-;") 'my-comment-or-uncomment-line)
+
+Emacs es un mundo por disfrutar, descubrir y  personalizar.
+
+`C-h i` Sigue con el tutorial para hacerte con los comandos basicos de navegacion.
+
+Lo tipico en emacs es teclear Ctrl (C) y Alt (M) constantemente.
+Adapta tu teclado y tus manos para estar comodo. Por ejemplo, cambia tu CAPS-LOCK por CTRL.
+O acabaras bastante mal.
+
+file:img/emacsen-hands.jpg
+
+Tambien se puede elegir un starterkit con la mayoria de los paquetes y funcionalidades precargadas:
+
+- [[https://github.com/bbatsov/prelude][Prelude]]
+- [[http://aquamacs.org/][AquaMacs]]
+- [[https://github.com/syl20bnr/spacemacs][Spacemacs]]
+
+https://www.emacswiki.org/emacs/StarterKits
+
+*** Themes
+
+**** zenburn-theme
+**** gruvbox-theme
+**** jazz-theme
+**** atom-one-dark-theme
+
+*** Sidebar & Project Tree
+(list-packages)
+*** Expand-region
+
+[[https://github.com/magnars/expand-region.el][Expand Region Github]]
+Expande la region en funcion del arbol semantico del texto que se este editando.
+
+
+#+BEGIN_SRC sh
+er/mark-word
+er/mark-symbol
+er/mark-symbol-with-prefix
+er/mark-next-accessor
+er/mark-method-call
+er/mark-inside-quotes
+er/mark-outside-quotes
+er/mark-inside-pairs
+er/mark-outside-pairs
+er/mark-comment
+er/mark-url
+er/mark-email
+er/mark-defun
+#+END_SRC sh
+
+*** Projectile
+Funcionalidades para operar sobre projectos.
+[[http://projectile.readthedocs.io/en/latest/][Documentacion]]
+
+#+BEGIN_SRC elisp
+;; Projectile + Helm
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+;; Helm
+(global-set-key (kbd "C-c P") 'helm-projectile-find-file)
+(global-set-key (kbd "C-c S") 'helm-semantic-or-imenu)
+(global-set-key (kbd "C-c p h") 'helm-projectile)
+(global-set-key (kbd "M-p") 'helm-buffers-list)
+(global-set-key (kbd "s-/") 'helm-dash-at-point)
+#+END_SRC
+
+*** Rest Client Mode
+
+[[https://github.com/pashky/restclient.el][RestClient Mode Github]]
+Herramienta para explorar y testear servicios HTTP.
+Pinta el resultado XML, JSON incluso imagenes.
+
+#+BEGIN_SRC shell
+emacs examples/restclient
+#+END_SRC
+
+*** Magit
+[[https://github.com/magit/magit][Magit Github]]
+
+Git porcelain inside Emacs. Ofrece una interfaz para controlar git desde emacs.
+
+whatthecommit.com
+
+*** Multiple cursors + wgrep
+Cambiar las ocurrencias de una palabra dentro de un proyecto por distintas variaciones
+
+*** Org mode
+
+Puede ser la razon por la que elijas usar Emacs.
+Util para: notas, TODO lists, agenda, planificador de projectos, Latex, plano-HTML ...
+Esta presentacion esta escrita usando el modo *org*
+
+**** TO-DO LIST
+
+***** TODO Comprar cereveza para la charla                         :homework:
+***** DONE Redactar la presentacion                                    :talk:
+***** TODO Evangelizar Emacs                                           :talk:
+      DEADLINE: <2016-08-07 Sun>
+******* TODO Al menos hacer que les parezca intereseante
+
+***** TODO Beber cerveza durante la charla                             :work:
+     SCHEDULED: <2016-08-07 Thu> DEADLINE: <2016-08-07 Fri>
+
+
+[[https://www.youtube.com/watch?v=oJTwQvgfgMM][Org-Mode Google Talk]]
+
+*** Webmode
+*** REPL
+Puedes tener Read eval print loop dentro de tu editor de texto.
+
+*eshell* *python* *js*
+
+** References
+[[https://github.com/anler/emacs-shortway][Emacs shortway]]
+[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]]
+[[https://github.com/Emacs-Madrid/elisp][Tutorial Elisp]]
+
+`M-x lo que quieras`  # doctor, tetris, butterfly
