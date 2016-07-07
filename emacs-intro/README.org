@@ -7,7 +7,7 @@
 
   Escape Meta Alt Control Shift
 
-  file:img/emacs-logo.png
+  [[file:img/emacs-logo.png]]
 
 ** Breve historia de muchos parentesis
 
@@ -247,18 +247,21 @@ muchos comandos actúan sobre ella. Por ejemplo:
 ** Ampliando Emacs
 *** Personalizando el editor
 
-file:img/emacsen-pro.png
+[[file:img/emacsen-pro.png]]
 
 Emacs evalua y carga el fichero emacs.d o emacs.d/init.el en tu ~ al iniciarse.
 
 # Algunas cosas que no me gustan del editor por defecto
+
+#+begin_src elisp
 (setq make-backup-files nil)
 (global-auto-revert-mode t)
 (setq auto-save-default -1)
 (setq show-paren-style 'mixed)
 
-# Creando macro functions
+;; Creando macro functions
 (global-set-key (kbd "C-;") 'my-comment-or-uncomment-line)
+#+end_src
 
 Emacs es un mundo por disfrutar, descubrir y  personalizar.
 
@@ -268,7 +271,7 @@ Lo tipico en emacs es teclear Ctrl (C) y Alt (M) constantemente.
 Adapta tu teclado y tus manos para estar comodo. Por ejemplo, cambia tu CAPS-LOCK por CTRL.
 O acabaras bastante mal.
 
-file:img/emacsen-hands.jpg
+[[file:img/emacsen-hands.jpg]]
 
 Tambien se puede elegir un starterkit con la mayoria de los paquetes y funcionalidades precargadas:
 
@@ -374,7 +377,9 @@ Puedes tener Read eval print loop dentro de tu editor de texto.
 
 ** References
 [[https://github.com/anler/emacs-shortway][Emacs shortway]]
-[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]]
-[[https://github.com/Emacs-Madrid/elisp][Tutorial Elisp]]
+
+[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]][[https://github.com/Emacs-Madrid/elisp][
+
+Tutorial Elisp]]
 
 `M-x lo que quieras`  # doctor, tetris, butterfly
