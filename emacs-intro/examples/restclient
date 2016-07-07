@@ -1,0 +1,35 @@
+# Regular HTTP request
+GET https://api.saluspot.com/api/1.0/questions/?specialities=1&8
+
+# GET HTTP request with regular headers
+GET https://api.saluspot.com/api/1.0/questions/?specialities=1&8
+User-Agent: Emacs24
+Accept-Encoding: compress, gzip
+Content-Type: application/json
+
+# You can store repetitive values in variables
+
+:user-id = 66931
+:JWT = ""
+:other-var := (format "%s %s %d" 'Neo (md5 "The Chosen") (+ 100 1))
+:saluspot-common-headers = <<
+Authorization: :JWT
+Content-Type: "application/json"
+#
+
+# GET HTTP request with headers and variables
+GET https://api.saluspot.com/api/1.0/:user-id/
+Content-Type: application/json
+
+# POST HTTP request to create a resource
+POST https://api.saluspot.com/api/1.0/questions/
+:saluspot-common-headers
+{
+  "title": "ajlsdfja",
+  "body": "alsdjfalskdjfalkjsdjlaj"
+}
+
+# POST HTTP request with a file
+POST http://httpbin.org/post
+Content-type: text/plain
+< /etc/passdw

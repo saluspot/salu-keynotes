@@ -1,2 +1,205 @@
-* Hello, I am Emacs
+#+TITLE: Descubriendo Emacs
+#+AUTHOR: Miguel Garcia Rodriguez
+#+DATE: <2016-07-06 Wed>
+#+EMAIL: miguel.garciarod@gmail.com
+
+* DESCUBRIENDO EMACS
+
+  Escape Meta Alt Control Shift
+
 ** Breve historia de muchos parentesis
+
+   1975 Richard Stallman & Guy Steele inspirados por: TECMAC y TMACS, un par de editores TECO-macro.
+   Fred Wright creo el editor de textos "E" tenía un comportamiento intuitivo WYSIWYG.
+   R.S pronto acumuló una colección de macros, cuyos nombres terminaban en "MAC" o "MACS" .
+   El sistema resultante fue llamado EMACS, es decir, "Editing MACroS" o "E con MACroS",
+
+   El primer editor similar a Emacs que funcionó sobre Unix fue el Gosling Emacs,
+   escrito en 1981 por James Gosling (que más tarde inventó el lenguaje de
+   programación Java). Fue escrito en el lenguaje de programación C y utilizaba un
+   lenguaje de extensión conocido como Mocklisp, con sintaxis similar a la del
+   lenguaje Lisp.  En 1984 era software propietario.
+
+   En 1984, Stallman empezó a trabajar en GNU Emacs, una alternativa de software
+   libre al Gosling Emacs.  GNU Emacs se convirtió en el primer programa publicado
+   por el emergente Proyecto GNU.  Emacs fue la 15.34, que apareció en 1985.
+
+   Actualmente existe la version (emacs-version) 24.5
+
+*** Instalamos Emacs
+
+    [[https://www.gnu.org/software/emacs/][Descargar]] Funciona hasta en papel:
+    GNU, GNU/Linux, FreeBSD, NetBSD, OpenBSD, OS X, MS Windows and Solaris.
+
+*** Que es Emacs?
+
+    Emacs no utiliza un lenguaje de extensión junto a una API que puedes usar para
+    escribir extensiones, es más correcto pensar en Emacs como un intérprete sobre el
+    cual se ha construido un framework para editar texto pero nada le impide ampliar este
+    framework para soportar otras tareas como interactuar con una base de datos o con un
+    terminal o con un servidor de mensajería.
+
+    Analizando con [[http://www.dwheeler.com/sloccount/][sloccount]] el código fuente de Emacs:
+
+    #+BEGIN_SRC sh
+      Totals grouped by language (dominant language first):
+      lisp:       1068797 (77.75%)
+      ansic:       280312 (20.39%)
+      objc:         15002 (1.09%)
+      sh:            6263 (0.46%)
+      perl:          1277 (0.09%)
+      pascal:        1010 (0.07%)
+      cs:             770 (0.06%)
+      cpp:            528 (0.04%)
+      awk:            477 (0.03%)
+      ruby:           257 (0.02%)
+      java:            27 (0.00%)
+    #+END_SRC
+
+    De hecho, generar el ejecutable de Emacs requiere dos pasos:
+
+    1. Compilar el código C que genera un ejecutable llamado temacs y que es puramente un
+    intérprete de EmacsLisp + rutinas de I/O.
+    2. El ejecutable temacs se ejecuta para cargar la librería estándard escrita en EmacsLisp y
+    volcar todo a un ejecutable con esas librerías pre-cargadas por razones de eficiencia.
+
+    Al último ejecutable es a lo que conocemos como Emacs.
+
+*** Que significa que se trate de un interprete?
+
+    Entre otras cosas, que absolutamente todo lo que haces en el programa, en última
+    instancia, invoca a una función escrita en EmacsLisp (la mayoría) o en C (por
+    razones de eficiencia).
+    Podemos programar, o re-programar toda su funcionalidad a nuestra conveniencia.
+
+    Acaso no somos programadores?
+    [[https://youtu.be/jNa3axo40qM?t=120][Emacs Rocks multiple cursors]]
+
+    Emacs es autodocumentado y
+
+    #+BEGIN_SRC elisp
+    C-h i(info) t(tutorial) m(mode) f(function) k(keybind) ?(all)
+    #+END_SRC
+
+*** Razones para usarlo
+
+    * Existe desde hace mas de 30 años y sigue mantenido y creciendo día a día.
+    * Documentado, customizable y respaldado por una gran comunidad
+
+
+** Terminologia
+** Creando nuestro emacs.d/init.el
+*** Personalizando el editor
+
+Emacs evalua y carga el fichero emacs.d o emacs.d/init.el en tu ~ al iniciarse.
+
+# Algunas cosas que no me gustan del editor por defecto
+(setq make-backup-files nil)
+(global-auto-revert-mode t)
+(setq auto-save-default -1)
+(setq show-paren-style 'mixed)
+# Creando macro functions
+(global-set-key (kbd "C-;") 'my-comment-or-uncomment-line)
+
+*** Modos: mayores & menores
+** El camino hacia la verdad
+
+Emacs es un mundo por disfrutar, descubrir y  personalizar.
+
+`C-h i` Sigue con el tutorial para hacerte con los comandos basicos de navegacion.
+
+Lo tipico en emacs es teclear Ctrl (C) y Alt (M) constantemente.
+Adapta tu teclado y tus manos para estar comodo. Por ejemplo, cambia tu CAPS-LOCK por CTRL.
+
+Puedes usar:
+
+- [[https://github.com/bbatsov/prelude][Prelude]]
+- [[http://aquamacs.org/][AquaMacs]]
+- [[https://github.com/syl20bnr/spacemacs][Spacemacs]]
+
+https://www.emacswiki.org/emacs/StarterKits
+
+*** Themes
+
+**** zenburn-theme
+**** gruvbox-theme
+**** jazz-theme
+**** atom-one-dark-theme
+
+*** Sidebar & Project Tree
+(list-packages)
+*** Expand-region
+
+[[https://github.com/magnars/expand-region.el][Expand Region Github]]
+Expande la region en funcion del arbol semantico del texto que se este editando.
+
+
+#+BEGIN_SRC sh
+er/mark-word
+er/mark-symbol
+er/mark-symbol-with-prefix
+er/mark-next-accessor
+er/mark-method-call
+er/mark-inside-quotes
+er/mark-outside-quotes
+er/mark-inside-pairs
+er/mark-outside-pairs
+er/mark-comment
+er/mark-url
+er/mark-email
+er/mark-defun
+#+END_SRC sh
+
+*** Rest Client Mode
+
+[[https://github.com/pashky/restclient.el][RestClient Mode Github]]
+Herramienta para explorar y testear servicios HTTP.
+Pinta el resultado XML, JSON incluso imagenes.
+
+#+BEGIN_SRC sh
+emacs examples/restclient
+#END_SRC
+
+*** Magit
+[[https://github.com/magit/magit][Magit Github]]
+
+Git porcelain inside Emacs. Ofrece una interfaz para controlar git desde emacs.
+
+whatthecommit.com
+
+*** Multiple cursors + wgrep
+Cambiar las ocurrencias de una palabra dentro de un proyecto por distintas variaciones
+
+*** Org mode
+
+Puede ser la razon por la que elijas usar Emacs.
+Util para: notas, TODO lists, agenda, planificador de projectos, Latex, plano-HTML ...
+Esta presentacion esta escrita usando el modo *org*
+
+**** TO-DO LIST
+
+***** TODO Comprar cereveza para la charla                         :homework:
+***** DONE Redactar la presentacion                                    :talk:
+***** TODO Evangelizar Emacs                                           :talk:
+      DEADLINE: <2016-08-07 Sun>
+******* TODO Al menos hacer que les parezca intereseante
+
+***** TODO Beber cerveza durante la charla                             :work:
+     SCHEDULED: <2016-08-07 Thu> DEADLINE: <2016-08-07 Fri>
+
+
+[[https://www.youtube.com/watch?v=oJTwQvgfgMM][Org-Mode Google Talk]]
+
+*** Webmode
+*** REPL
+Puedes tener Read eval print loop dentro de tu editor de texto.
+
+*eshell* *python* *js*
+
+** References
+
+`M-x lo que quieras`
+
+[[https://github.com/anler/emacs-shortway][Emacs shortway]]
+[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]]
+[[https://github.com/Emacs-Madrid/elisp][Tutorial Elisp]]
