@@ -3,17 +3,15 @@
 #+DATE: <2016-07-06 Wed>
 #+EMAIL: miguel.garciarod@gmail.com
 
-* DESCUBRIENDO EMACS
-
   Escape Meta Alt Control Shift
 
   [[file:img/emacs-logo.png]]
 
 ** Breve historia de muchos parentesis
 
-   1975 Richard Stallman & Guy Steele inspirados por: TECMAC y TMACS, un par de editores TECO-macro.
-   Fred Wright creo el editor de textos "E" tenía un comportamiento intuitivo WYSIWYG.
-   R.S pronto acumuló una colección de macros, cuyos nombres terminaban en "MAC" o "MACS" .
+   En los 80 Fred Wright creo el editor de textos "E" con un comportamiento intuitivo WYSIWYG,
+   Richard Stallman se enamoro de esta idea y pronto acumuló una colección de macros,
+   cuyos nombres terminaban en "MAC" o "MACS".
    El sistema resultante fue llamado EMACS, es decir, "Editing MACroS" o "E con MACroS",
 
    El primer editor similar a Emacs que funcionó sobre Unix fue el Gosling Emacs,
@@ -75,9 +73,8 @@
     Podemos programar, o re-programar toda su funcionalidad a nuestra conveniencia.
 
     Acaso no somos programadores?
-    [[https://youtu.be/jNa3axo40qM?t=120][Emacs Rocks multiple cursors]]
 
-    Emacs es autodocumentado y
+    [[https://github.com/magnars][Magnars]]:  [[https://youtu.be/jNa3axo40qM?t=120][Emacs Rocks multiple cursors]]
 
     #+BEGIN_SRC elisp
     C-h i(info) t(tutorial) m(mode) f(function) k(keybind) ?(all)
@@ -85,13 +82,20 @@
 
 *** Razones para usarlo
 
-    * Existe desde hace mas de 30 años y sigue mantenido y creciendo día a día.
-    * Documentado, customizable y respaldado por una gran comunidad
+    * Existe desde hace mas de 30 años y continua creciendo y siendo mantenido.
+    * El editor, tu primer y gran herramienta
+    * Libertad de hacer lo que quieras
+    * Gran documentacion
+    * Quien necesita una UI?
+    * Aprender cosas nuevas
 
 Pero... quien lo usa?
 
-browse-url-firefox http://wenshanren.org/?p=418
-Yukihiro's Talk: http://www.slideshare.net/yukihiro_matz/how-emacs-changed-my-life
+[[http://wenshanren.org/?p=418][Who uses Emacs]]
+
+Que opina el creador de Ruby de Emacs?
+
+[[http://www.slideshare.net/yukihiro_matz/how-emacs-changed-my-life][Yukihiro's Talk]]
 
 ** Terminologia
 *** modo
@@ -251,7 +255,7 @@ muchos comandos actúan sobre ella. Por ejemplo:
 
 Emacs evalua y carga el fichero emacs.d o emacs.d/init.el en tu ~ al iniciarse.
 
-# Algunas cosas que no me gustan del editor por defecto
+Hay algunas cosas que no me gustan del editor por defecto.
 
 #+begin_src elisp
 (setq make-backup-files nil)
@@ -259,8 +263,12 @@ Emacs evalua y carga el fichero emacs.d o emacs.d/init.el en tu ~ al iniciarse.
 (setq auto-save-default -1)
 (setq show-paren-style 'mixed)
 
-;; Creando macro functions
-(global-set-key (kbd "C-;") 'my-comment-or-uncomment-line)
+;; move between opened buffers
+(global-set-key [C-tab] 'next-buffer)
+(global-set-key [C-iso-lefttab] 'previous-buffer)
+;; Increase/Decrease font size
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
 #+end_src
 
 Emacs es un mundo por disfrutar, descubrir y  personalizar.
@@ -269,9 +277,15 @@ Emacs es un mundo por disfrutar, descubrir y  personalizar.
 
 Lo tipico en emacs es teclear Ctrl (C) y Alt (M) constantemente.
 Adapta tu teclado y tus manos para estar comodo. Por ejemplo, cambia tu CAPS-LOCK por CTRL.
-O acabaras bastante mal.
+O acabaras bastante mal. Lo normal en MACs es atajar el command a ctrl o meta.
+
+#+begin_src elisp
+(setq mac-command-modifier 'control)
+#+end_src
+
 
 [[file:img/emacsen-hands.jpg]]
+
 
 Tambien se puede elegir un starterkit con la mayoria de los paquetes y funcionalidades precargadas:
 
@@ -279,22 +293,41 @@ Tambien se puede elegir un starterkit con la mayoria de los paquetes y funcional
 - [[http://aquamacs.org/][AquaMacs]]
 - [[https://github.com/syl20bnr/spacemacs][Spacemacs]]
 
-https://www.emacswiki.org/emacs/StarterKits
+
+[[https://www.emacswiki.org/emacs/StarterKits][Emacs Starter Kits]]
+
+**** Melpa
+
+Emacs Lisp Package Archive:
+https://melpa.org/
+
+[[http://ergoemacs.org/emacs/emacs_package_system.html][Melpa ErgoEmacs Wiki]]
 
 *** Themes
 
-**** zenburn-theme
-**** gruvbox-theme
-**** jazz-theme
-**** atom-one-dark-theme
+Probablemente la apariencia inicial de Emacs no sea la mas llamativa,
+para empezar a escribir codigo, leer las noticias o revisar el email.
+Como no, podemos cambiar el tema e incluso modificarlo a nuestro antojo,
+hasta los ultimos detalles.
+
+#+begin_src elips
+M-x load-theme  ;; Cargar un tema
+M-x customize-theme  ;; Editar un tema
+#+end_src
+
+Temas de gusto personal:
+zenburn-theme, gruvbox-theme, jazz-theme, atom-bbone-dark-theme
 
 *** Sidebar & Project Tree
-(list-packages)
+
+Emacs viene con una herramienta para navegar por el filesystem: Dired
+
+No obstante si echas de menos un sidebar con el arbol del proyecto,
+puedes probar paquetes como: NeoTree
+
 *** Expand-region
 
 [[https://github.com/magnars/expand-region.el][Expand Region Github]]
-Expande la region en funcion del arbol semantico del texto que se este editando.
-
 
 #+BEGIN_SRC sh
 er/mark-word
@@ -347,6 +380,7 @@ Git porcelain inside Emacs. Ofrece una interfaz para controlar git desde emacs.
 whatthecommit.com
 
 *** Multiple cursors + wgrep
+
 Cambiar las ocurrencias de una palabra dentro de un proyecto por distintas variaciones
 
 *** Org mode
@@ -369,17 +403,40 @@ Esta presentacion esta escrita usando el modo *org*
 
 [[https://www.youtube.com/watch?v=oJTwQvgfgMM][Org-Mode Google Talk]]
 
-*** Webmode
+*** Webmode & Emmet (old ZenCoding)
+    [[http://web-mode.org/][Documentacion]]
+    Modo mayor para editar web templates
+
+*** Yas snippets
+Yet another snippet extension
+
+Por defecto TAB esta asociada a la funcion yas/expand que escribe el snippet.
+
+#+begin_src elisp
+(define-key yas-minor-mode-map (kbd "<tab>") nil)
+(define-key yas-minor-mode-map (kbd "TAB") nil)
+(define-key yas-minor-mode-map (kbd "<the new key>") 'yas-expand)
+#+end_src
+
 *** REPL
 Puedes tener Read eval print loop dentro de tu editor de texto.
 
 *eshell* *python* *js*
 
 ** References
+
+
 [[https://github.com/anler/emacs-shortway][Emacs shortway]]
 
-[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]][[https://github.com/Emacs-Madrid/elisp][
 
-Tutorial Elisp]]
+[[https://github.com/Emacs-Madrid/awesome-emacs][Awesome Emacs]]
 
-`M-x lo que quieras`  # doctor, tetris, butterfly
+
+[[https://github.com/Emacs-Madrid/elisp][Tutorial Elisp]]
+
+
+[[https://www.emacswiki.org/emacs/EmacsWiki][Emacs Wiki]]
+
+#+begin_src elisp
+M-x lo que quieras  ;;doctor, tetris, butterfly
+#+end_src
